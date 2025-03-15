@@ -38,7 +38,11 @@ local frac_node = {
     if depth ~= 0 then
       return string.format("%s\\frac{}", stripped)
     else
-      return string.format("%s\\frac{%s}", stripped:sub(1, i - 1), stripped:sub(i + 1, #stripped - 1))
+      return string.format(
+        "%s\\frac{%s}",
+        stripped:sub(1, i - 1),
+        stripped:sub(i + 1, #stripped - 1)
+      )
     end
   end, {}),
   t("{"),
@@ -50,6 +54,17 @@ local frac_node = {
 local subscript_node = {
   f(function(_, snip)
     return string.format("%s_{%s}", snip.captures[1], snip.captures[2])
+  end, {}),
+  i(0),
+}
+
+local sub_superscript_node = {
+  f(function(_, snip)
+    if snip.captures[2] == "_" then
+      return string.format("%s^%s", snip.captures[1], snip.captures[3])
+    else
+      return string.format("%s_%s", snip.captures[1], snip.captures[3])
+    end
   end, {}),
   i(0),
 }
@@ -77,11 +92,15 @@ function M.retrieve(is_math)
       trig = "([%a])(%d)",
       name = "auto subscript",
     }, vim.deepcopy(subscript_node)),
-
     s({
       trig = "([%a])_(%d%d)",
       name = "auto subscript 2",
     }, vim.deepcopy(subscript_node)),
+
+    s({
+      trig = "([^%s_%^]+)([_%^])(.+);",
+      name = "auto superscript",
+    }, vim.deepcopy(sub_superscript_node)),
 
     s({
       priority = 1000,
