@@ -70,16 +70,13 @@ M.setup_tex = function(is_math, not_math)
       { trig = "pac", name = "Package" },
       "\\usepackage[${1:options}]{${2:package}}$0"
     ),
-
-    -- ls.parser.parse_snippet({ trig = "nn", name = "Tikz node" }, {
-    --   "$0",
-    --   -- "\\node[$5] (${1/[^0-9a-zA-Z]//g}${2}) ${3:at (${4:0,0}) }{$${1}$};",
-    --   "\\node[$5] (${1}${2}) ${3:at (${4:0,0}) }{$${1}$};",
-    -- }),
   })
 
-  local math_i = require("luasnip-latex-snippets/math_i").retrieve(is_math)
+  ls.add_snippets("tex", require("luasnip-latex-snippets.b").retrieve(not_math), {
+    default_priority = 0,
+  })
 
+  local math_i = require("luasnip-latex-snippets.math_i").retrieve(is_math)
   ls.add_snippets("tex", math_i, { default_priority = 0 })
 
   ls.add_snippets("tex", _autosnippets(is_math, not_math), {

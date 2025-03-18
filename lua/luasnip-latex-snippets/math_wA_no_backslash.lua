@@ -81,8 +81,6 @@ function M.retrieve(is_math)
     table.insert(snippets, with_priority({ trig = ";" .. trig, name = name }, "\\" .. name .. " "))
   end
 
-  table.insert(snippets, with_priority({ trig = ";quad", name = "quad" }, "\\quad "))
-  table.insert(snippets, with_priority({ trig = ";qquad", name = "qquad" }, "\\qquad "))
   table.insert(snippets, with_priority({ trig = "asin", name = "arcsin" }, "\\arcsin "))
   table.insert(snippets, with_priority({ trig = "atan", name = "arctan" }, "\\arctan "))
   table.insert(snippets, with_priority({ trig = "asec", name = "arcsec" }, "\\arcsec "))
